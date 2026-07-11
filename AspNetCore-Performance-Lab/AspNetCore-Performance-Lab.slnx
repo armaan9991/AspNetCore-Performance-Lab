@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Api.Controllers/Api.Controllers.csproj" />
+    <Project Path="Api.Minimal/Api.Minimal.csproj" />
+    <Project Path="BenchmarkRunner/BenchmarkRunner.csproj" />
+    <Project Path="Shared/Shared.csproj" />
+  </Folder>
+</Solution>
