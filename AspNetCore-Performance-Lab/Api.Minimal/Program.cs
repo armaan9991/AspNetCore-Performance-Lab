@@ -13,7 +13,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();`
+    app.UseSwagger();
     app.UseSwaggerUI();
 }
 // redirectes HTTP requests to HTTPS
