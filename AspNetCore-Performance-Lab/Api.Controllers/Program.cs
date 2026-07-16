@@ -1,3 +1,5 @@
+using Api.Controllers.Repositories.Implementations;
+using Api.Controllers.Repositories.Interfaces;
 using Api.Controllers.Services;
 
 
@@ -9,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddControllers();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
