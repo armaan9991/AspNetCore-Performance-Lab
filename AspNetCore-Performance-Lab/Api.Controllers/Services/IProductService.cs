@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Shared.Models;
-namespace Api.Controller.Services;
+namespace Api.Controllers.Services;
 
 public interface IProductService
 {
