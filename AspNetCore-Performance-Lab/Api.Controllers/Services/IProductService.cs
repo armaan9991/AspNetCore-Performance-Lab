@@ -1,13 +1,9 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Shared.Models;
+﻿using Shared.Models;
 namespace Api.Controllers.Services;
 
+// Defines the business operations 
+// used so we can loosly bound it to service so incase for testing we can just swap the service class with other 
+// without breaking the code.
 public interface IProductService
 {
     IEnumerable<Product> GetAllProducts();

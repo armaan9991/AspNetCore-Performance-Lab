@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Models
-{
+﻿namespace Shared.Models;
     public class Product
     {
         public int Id { get; set; }
@@ -13,4 +6,3 @@ namespace Shared.Models
         public decimal Price { get; set; }
         public string Category { get; set; }
     }
-}
