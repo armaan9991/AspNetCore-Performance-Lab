@@ -1,52 +1,38 @@
 ﻿using Shared.Models;
 using Api.Controllers.Repositories.Interfaces;
+using Api.Controllers.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Api.Controllers.Repositories.Implementations
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly List<Product> _products =
-        [
-            new Product
-            {
-                Id =1,
-                Name = "LapTop",
-                Price = 1200,
-                Category = "Electronics"
-            },
-            new Product
-            {
-                Id =2,
-                Name = "Keyboard",
-                Price = 80,
-                Category = "Accessories"
-            },
-            new Product
-            {
-                Id =3,
-                Name = "Mouse",
-                Price = 50,
-                Category = "Accessories"
-            },
-            new Product
-            {
-                Id =4,
-                Name = "Monitor",
-                Price = 300,
-                Category = "Electronics"
-            }
-        ];
+        private readonly AppDbContext _context;
+        public ProductRepository(AppDbContext context)
+        {
+            _context = context;
+        }
 
-        public IEnumerable<Product> GetAll()
+        //public IEnumerable<Product> GetAll()
+        //{
+        //    return _products;
+        //}
+
+        // async makes requests non-blocking, allowing other operations
+        // to continue while waiting for the database response
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return _products;
+            return await _context.Products.ToListAsync();
         }
-        public Product? GetById(int id)
+
+        public async Task<Product?> GetByIdAsync(int id)
         {
-            return _products.FirstOrDefault(x => x.Id == id);
+            return await _context.Products.FindAsync(id);
         }
-        public Product Add(Product product)
+        public async Task<Product> AddAsync(Product product)
         {
-            _products.Add(product);
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
             return product;
         }
     }
