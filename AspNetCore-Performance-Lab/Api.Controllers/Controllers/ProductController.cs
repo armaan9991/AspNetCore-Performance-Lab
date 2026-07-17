@@ -29,15 +29,16 @@ public class ProductController : ControllerBase
     }
     // first end point
     [HttpGet]
-    public IActionResult GetProducts()
+    public async Task<IActionResult> GetProducts()
     {
-        return Ok(_service.GetAllProducts());
+        var products = await _service.GetAllProductsAsync();
+        return  Ok(products);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetProduct(int id)
+    public async Task<IActionResult> GetProduct(int id)
     {
-        var prod = _service.GetProductById(id);
+        var prod = await _service.GetProductByIdAsync(id);
         if(prod == null)   // 404 not found status code
         {
             return NotFound();
@@ -46,9 +47,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateProduct(Product prod)
+    public async Task<IActionResult> CreateProduct(Product prod)
     {
-        var created = _service.AddProduct(prod);
+        var created = await _service.AddProductAsync(prod);
         return CreatedAtAction(nameof(GetProduct),
             new { id = created.Id },
             created);    // 201 created status code with data in JSON
