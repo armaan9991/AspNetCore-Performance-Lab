@@ -6,7 +6,8 @@ namespace Api.Controllers.Services;
 // without breaking the code.
 public interface IProductService
 {
-    IEnumerable<Product> GetAllProducts();
-    Product? GetProductById(int id);
-    Product AddProduct(Product product);
+    Task<IEnumerable<Product>> GetAllProductsAsync();
+    Task<Product?> GetProductByIdAsync(int id);
+    Task<Product> AddProductAsync(Product product);
+
 }

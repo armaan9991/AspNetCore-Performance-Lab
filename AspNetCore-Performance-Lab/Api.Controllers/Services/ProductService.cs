@@ -10,17 +10,17 @@ namespace Api.Controllers.Services
         {
             _repository = repository;
         }
-        public IEnumerable<Product> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
-        public Product? GetProductById(int id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
-        public Product AddProduct(Product product)
+        public async Task<Product> AddProductAsync(Product product)
         {
-            return _repository.Add(product);
+            return await _repository.AddAsync(product);
         }
     }
 }
