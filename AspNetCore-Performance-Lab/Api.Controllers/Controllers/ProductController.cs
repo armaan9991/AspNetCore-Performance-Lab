@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 using Shared.Models;
 namespace Api.Controllers.Controllers;
 
+
+/*  tells that this class is controller
+ *  automatically model validation , better error respose,  API specific behaviors.
+ * GET-> retreive data
+ * get by id  return one product
+ * PUT -> update existing data
+ * DELETE -> delete existing data
+ */
+
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]")]    // here controller is replaced with controller name which is ProductController so the route will be api/product
+
 public class ProductController : ControllerBase
 {
     private readonly IProductService _service;
@@ -17,7 +27,7 @@ public class ProductController : ControllerBase
     {
         _service = service;
     }
-
+    // first end point
     [HttpGet]
     public IActionResult GetProducts()
     {
@@ -28,11 +38,11 @@ public class ProductController : ControllerBase
     public IActionResult GetProduct(int id)
     {
         var prod = _service.GetProductById(id);
-        if(prod == null)
+        if(prod == null)   // 404 not found status code
         {
             return NotFound();
         }
-        return Ok(prod);
+        return Ok(prod);   // is 200 status code with data in JSON
     }
 
     [HttpPost]
@@ -41,7 +51,7 @@ public class ProductController : ControllerBase
         var created = _service.AddProduct(prod);
         return CreatedAtAction(nameof(GetProduct),
             new { id = created.Id },
-            created);
+            created);    // 201 created status code with data in JSON
     }
 }
 
