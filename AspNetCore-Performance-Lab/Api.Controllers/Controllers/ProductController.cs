@@ -1,10 +1,5 @@
 ﻿using Api.Controllers.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Shared.Models;
 namespace Api.Controllers.Controllers;
 
@@ -34,7 +29,7 @@ public class ProductController : ControllerBase
         var products = await _service.GetAllProductsAsync();
         return  Ok(products);
     }
-
+    //
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProduct(int id)
     {
