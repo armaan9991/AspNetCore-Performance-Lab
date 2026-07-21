@@ -9,5 +9,9 @@ public interface IProductService
     Task<IEnumerable<Product>> GetAllProductsAsync();
     Task<Product?> GetProductByIdAsync(int id);
     Task<Product> AddProductAsync(Product product);
+    Task<IEnumerable<Product>> GetByCategoryAsync(string category);
 
+    Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price);
+
+    Task<Product?> SearchByNameAsync(string name);
 }

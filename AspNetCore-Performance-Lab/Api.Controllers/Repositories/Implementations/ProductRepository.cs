@@ -34,6 +34,25 @@ namespace Api.Controllers.Repositories.Implementations
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product;
+       }
+        public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
+        {
+            var result = _context.Products.AsNoTracking()
+                .Where(p => p.Category == category);
+            return await result.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price)
+        {
+            var result = _context.Products.AsNoTracking().
+                Where(p => p.Price >= price);
+            return await result.ToListAsync();
+        }
+        public async Task<Product?> SearchByNameAsync(string name)
+        {
+            var result = await _context.Products.AsNoTracking().
+                FirstOrDefaultAsync(p => p.Name == name);
+            return result;
         }
     }
 }
