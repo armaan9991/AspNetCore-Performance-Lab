@@ -20,6 +20,16 @@ namespace Api.Controllers.Services
         }
         public async Task<Product> AddProductAsync(Product product)
         {
+            if (product.Price<0)
+            {
+                throw new Exception("no negative price");
+            }
+            var item = await _repository.GetByIdAsync(product.Id);
+            if(item != null)
+            {
+                throw new Exception("Already present!!");
+            }
+
             return await _repository.AddAsync(product);
         }
         public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
