@@ -4,8 +4,9 @@ using Shared.Models;
 namespace Api.Controllers.Controllers;
 
 
-/*  tells that this class is controller
- *  automatically model validation , better error respose,  API specific behaviors.
+/* 
+ * tells that this class is controller
+ * automatically model validation , better error respose,  API specific behaviors.
  * GET-> retreive data
  * get by id  return one product
  * PUT -> update existing data
@@ -49,5 +50,37 @@ public class ProductController : ControllerBase
             new { id = created.Id },
             created);    // 201 created status code with data in JSON
     }
-}
 
+    [HttpGet]
+    public async Task<IActionResult> GetByCategory(string category)
+    {
+        var created = await _service.GetByCategoryAsync(category);
+        if (created == null)
+        {
+            return NotFound();
+        }
+        return Ok(created);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetExpensiveProduct(decimal price)
+    {
+            var created = await _service.GetExpensiveProductsAsync(price);
+            if(created == null)
+            {
+                return NotFound();
+            }
+            return Ok(created);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SearchByName(string name)
+    {
+        var created = await _service.SearchByNameAsync(name);
+        if (created == null)
+        {
+            return NotFound();
+        }
+        return Ok(created);
+    }
+}
