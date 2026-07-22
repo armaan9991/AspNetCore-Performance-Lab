@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.Models;
 namespace Api.Controllers.Controllers;
 
-
 /* 
  * tells that this class is controller
  * automatically model validation , better error respose,  API specific behaviors.
@@ -11,7 +10,7 @@ namespace Api.Controllers.Controllers;
  * get by id  return one product
  * PUT -> update existing data
  * DELETE -> delete existing data
- */
+*/
 
 [ApiController]
 [Route("api/[controller]")]    // here controller is replaced with controller name which is ProductController so the route will be api/product
@@ -51,7 +50,7 @@ public class ProductController : ControllerBase
             created);    // 201 created status code with data in JSON
     }
 
-    [HttpGet]
+    [HttpGet("category")]
     public async Task<IActionResult> GetByCategory(string category)
     {
         var created = await _service.GetByCategoryAsync(category);
@@ -62,7 +61,7 @@ public class ProductController : ControllerBase
         return Ok(created);
     }
 
-    [HttpGet]
+    [HttpGet("price")]
     public async Task<IActionResult> GetExpensiveProduct(decimal price)
     {
             var created = await _service.GetExpensiveProductsAsync(price);
@@ -73,7 +72,7 @@ public class ProductController : ControllerBase
             return Ok(created);
     }
 
-    [HttpGet]
+    [HttpGet("name")]
     public async Task<IActionResult> SearchByName(string name)
     {
         var created = await _service.SearchByNameAsync(name);
