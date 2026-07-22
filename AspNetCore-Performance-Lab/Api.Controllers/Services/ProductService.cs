@@ -22,5 +22,17 @@ namespace Api.Controllers.Services
         {
             return await _repository.AddAsync(product);
         }
+        public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
+        {
+            return await _repository.GetByCategoryAsync(category);
+        }
+        public async Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price)
+        {
+            return await _repository.GetExpensiveProductsAsync(price);
+        }
+        public async Task<Product?> SearchByNameAsync(string name)
+        {
+            return await _repository.SearchByNameAsync(name);
+        }
     }
 }
