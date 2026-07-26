@@ -50,5 +50,15 @@ namespace Api.Controllers.Services
         {
             return await _repository.SearchByNameAsync(name);
         }
+        public static  ProductReadDto MapToReadDto(Product product)
+        {
+            return new ProductReadDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Category = product.Category,
+            };
+        }
     }
 }
