@@ -11,15 +11,17 @@ namespace Api.Controllers.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductReadDto>> GetAllProductsAsync()
         {
-            return await _repository.GetAllAsync();
+            var results = await _repository.GetAllAsync();
+            return results.Select(MapToReadDto);
         }
-        public async Task<Product?> GetProductByIdAsync(int id)
+        public async Task<ProductReadDto?> GetProductByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(id);
+            return result != null ? MapToReadDto(result) : null;
         }
-        public async Task<Product> AddProductAsync(ProductCreateDto product)
+        public async Task<ProductReadDto> AddProductAsync(ProductCreateDto product)
         {
             if (product.Price<0)
             {
@@ -36,19 +38,23 @@ namespace Api.Controllers.Services
                 Price = product.Price,
                 Category = product.Category
             };
-            return await _repository.AddAsync(productEntity);
+            await _repository.AddAsync(productEntity);
+            return MapToReadDto(productEntity);
         }
-        public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
+        public async Task<IEnumerable<ProductReadDto>> GetByCategoryAsync(string category)
         {
-            return await _repository.GetByCategoryAsync(category);
+            var results= await _repository.GetByCategoryAsync(category);
+            return results.Select(MapToReadDto);
         }
-        public async Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price)
+        public async Task<IEnumerable<ProductReadDto>> GetExpensiveProductsAsync(decimal price)
         {
-            return await _repository.GetExpensiveProductsAsync(price);
+            var results = await _repository.GetExpensiveProductsAsync(price);
+            return results.Select(MapToReadDto);
         }
-        public async Task<Product?> SearchByNameAsync(string name)
+        public async Task<ProductReadDto?> SearchByNameAsync(string name)
         {
-            return await _repository.SearchByNameAsync(name);
+            var results= await _repository.SearchByNameAsync(name);
+            return results != null ? MapToReadDto(results) : null;
         }
         public static  ProductReadDto MapToReadDto(Product product)
         {
