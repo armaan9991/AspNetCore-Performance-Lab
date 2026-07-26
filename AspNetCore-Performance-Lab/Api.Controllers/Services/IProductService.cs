@@ -1,14 +1,15 @@
 ﻿using Shared.Models;
+using Shared.DTOs;
 namespace Api.Controllers.Services;
 // Defines the business operations 
 // used so we can loosly bound it to service so incase for testing we can just swap the service class with other 
 // without breaking the code.
 public interface IProductService
 {
-    Task<IEnumerable<Product>> GetAllProductsAsync();
-    Task<Product?> GetProductByIdAsync(int id);
-    Task<Product> AddProductAsync(Product product);
-    Task<IEnumerable<Product>> GetByCategoryAsync(string category);
-    Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price);
-    Task<Product?> SearchByNameAsync(string name);
+    Task<IEnumerable<ProductReadDto>> GetAllProductsAsync();
+    Task<ProductReadDto?> GetProductByIdAsync(int id);
+    Task<ProductReadDto> AddProductAsync(ProductCreateDto product);
+    Task<IEnumerable<ProductReadDto>> GetByCategoryAsync(string category);
+    Task<IEnumerable<ProductReadDto>> GetExpensiveProductsAsync(decimal price);
+    Task<ProductReadDto?> SearchByNameAsync(string name);
 } 
