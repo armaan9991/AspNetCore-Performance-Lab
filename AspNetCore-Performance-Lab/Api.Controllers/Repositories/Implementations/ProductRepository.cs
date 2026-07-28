@@ -2,6 +2,7 @@
 using Api.Controllers.Repositories.Interfaces;
 using Api.Controllers.Data;
 using Microsoft.EntityFrameworkCore;
+using Shared.DTOs;
 
 namespace Api.Controllers.Repositories.Implementations
 {
@@ -35,6 +36,25 @@ namespace Api.Controllers.Repositories.Implementations
             await _context.SaveChangesAsync();
             return product;
        }
+
+        public async Task<Product?> UpdateAsync(Product product)
+        {
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var prod = await _context.Products.FindAsync(id);
+            
+            if(prod == null)
+            {
+                return false;
+            }
+            _context.Products.Remove(prod);
+            await _context.SaveChangesAsync();
+            return true;
+        }
         public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
         {
             var result = _context.Products.AsNoTracking()
