@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Net;
 using System.Text.Json;
+using Api.Controllers.Responses;
 
 namespace Api.Controllers.Middleware
 {

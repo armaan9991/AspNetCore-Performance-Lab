@@ -1,7 +1,9 @@
-﻿using Api.Controllers.Services;
+﻿using Api.Controllers.Responses;
+using Api.Controllers.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
 using Shared.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace Api.Controllers.Controllers;
 
 /* 
@@ -28,7 +30,13 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> GetProducts()
     {
         var products = await _service.GetAllProductsAsync();
-        return  Ok(products);
+        return  Ok(new ApiResponse<
+            IEnumerable<ProductReadDto>>
+        {
+            Success = true,
+            Message = "Products retrieved successfully",
+            Data = products
+        });
     }
     //
     [HttpGet("{id}")]
@@ -37,18 +45,34 @@ public class ProductController : ControllerBase
         var prod = await _service.GetProductByIdAsync(id);
         if(prod == null)   // 404 not found status code
         {
-            return NotFound();
+            return NotFound(new ApiResponse<ProductReadDto>
+            {
+                Success =false,
+                Message = $"Product with id {id} not found",
+                Data = null
+            });
         }
-        return Ok(prod);   // is 200 status code with data in JSON
+        return Ok(new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = $"Product with id {id} retrieved successfully",
+            Data = prod
+        });
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateProduct(ProductCreateDto prod)
     {
         var created = await _service.AddProductAsync(prod);
+        var Response = new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = "Product created successfully",
+            Data = created
+        };
         return CreatedAtAction(nameof(GetProduct),
             new { id = created.Id },
-            created);    // 201 created status code with data in JSON
+            Response);    
     }
     [HttpPost("{id}")]
     public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
@@ -56,9 +80,19 @@ public class ProductController : ControllerBase
         var updated = await _service.UpdateProductAsync(id, prod);
         if (updated == null)
         {
-            return NotFound();
+            return NotFound(new ApiResponse<ProductReadDto>
+            {
+                Success = false,
+                Message = $"Product with id {id} not found",
+                Data = null
+            });
         }
-        return Ok(updated);
+        return Ok(new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = $"Product with id {id} updated successfully",
+            Data = updated
+        });
     }
     [HttpPost("delete/{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
@@ -66,9 +100,19 @@ public class ProductController : ControllerBase
         var deleted = await _service.DeleteProductAsync(id);
         if (!deleted)
         {
-            return NotFound();
+            return NotFound(new ApiResponse<ProductReadDto>
+            {
+                Success = false,
+                Message = $"Product with id {id} not found",
+                Data = null
+            });
         }
-        return NoContent();  // 204 no content status code
+        return Ok(new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = $"Product with id {id} deleted successfully",
+            Data = deleted ? new ProductReadDto { Id = id } : null
+        });
     }
     [HttpGet("category")]
     public async Task<IActionResult> GetByCategory(string category)
@@ -76,9 +120,19 @@ public class ProductController : ControllerBase
         var created = await _service.GetByCategoryAsync(category);
         if (created == null)
         {
-            return NotFound();
+            return NotFound(new ApiResponse<ProductReadDto>
+            {
+                Success = false,
+                Message = $"Product with {category} not found",
+                Data = null
+            });
         }
-        return Ok(created);
+        return Ok(new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = $"Product with {category} found  successfully",
+            Data = (ProductReadDto)created
+        });
     }
 
     [HttpGet("price")]
@@ -87,9 +141,19 @@ public class ProductController : ControllerBase
             var created = await _service.GetExpensiveProductsAsync(price);
             if(created == null)
             {
-                return NotFound();
+                return NotFound(new ApiResponse<ProductReadDto>
+                {
+                    Success = false,
+                    Message = $"Product expensive than {price} not found",
+                    Data = null
+                });
             }
-            return Ok(created);
+            return Ok(new ApiResponse<ProductReadDto>
+            {
+                Success = true,
+                Message = $"Product expensive than {price} found",
+                Data = created != null ? new ProductReadDto { Price = price } : null
+            });
     }
 
     [HttpGet("name")]
@@ -98,8 +162,18 @@ public class ProductController : ControllerBase
         var created = await _service.SearchByNameAsync(name);
         if (created == null)
         {
-            return NotFound();
+            return NotFound(new ApiResponse<ProductReadDto>
+            {
+                Success = false,
+                Message = $"Product named {name} not found",
+                Data = null
+            });
         }
-        return Ok(created);
+        return Ok(new ApiResponse<ProductReadDto>
+        {
+            Success = true,
+            Message = $"Product named :{name}  found",
+            Data = created
+        });
     }
 }
