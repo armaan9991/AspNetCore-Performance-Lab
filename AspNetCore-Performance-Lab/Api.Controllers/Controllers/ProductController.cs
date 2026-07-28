@@ -1,5 +1,6 @@
 ﻿using Api.Controllers.Services;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
 using Shared.Models;
 namespace Api.Controllers.Controllers;
 
@@ -42,14 +43,33 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct(Product prod)
+    public async Task<IActionResult> CreateProduct(ProductCreateDto prod)
     {
         var created = await _service.AddProductAsync(prod);
         return CreatedAtAction(nameof(GetProduct),
             new { id = created.Id },
             created);    // 201 created status code with data in JSON
     }
-
+    [HttpPost("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
+    {
+        var updated = await _service.UpdateProductAsync(id, prod);
+        if (updated == null)
+        {
+            return NotFound();
+        }
+        return Ok(updated);
+    }
+    [HttpPost("delete/{id}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        var deleted = await _service.DeleteProductAsync(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+        return NoContent();  // 204 no content status code
+    }
     [HttpGet("category")]
     public async Task<IActionResult> GetByCategory(string category)
     {
