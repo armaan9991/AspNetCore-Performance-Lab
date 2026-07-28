@@ -41,6 +41,25 @@ namespace Api.Controllers.Services
             await _repository.AddAsync(productEntity);
             return MapToReadDto(productEntity);
         }
+        public async Task<ProductReadDto?> UpdateProductAsync(int id,ProductUpdateDto productUpdateDto)
+        {
+            var prod = await _repository.GetByIdAsync(id);
+            if(prod == null)
+            {
+                return null;
+            }
+            prod.Name = productUpdateDto.Name;
+            prod.Price = productUpdateDto.Price;
+            prod.Category = productUpdateDto.Category;
+
+            await _repository.UpdateAsync(prod);
+            return MapToReadDto(prod);
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            return await _repository.DeleteAsync(id);
+        }
         public async Task<IEnumerable<ProductReadDto>> GetByCategoryAsync(string category)
         {
             var results= await _repository.GetByCategoryAsync(category);
