@@ -1,4 +1,5 @@
-﻿using Shared.Models;
+﻿using Shared.DTOs;
+using Shared.Models;
 
 namespace Api.Controllers.Repositories.Interfaces
 {
@@ -7,6 +8,8 @@ namespace Api.Controllers.Repositories.Interfaces
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product?> GetByIdAsync(int id);
         Task<Product> AddAsync(Product product);
+        Task<bool> UpdateAsync(int id,ProductUpdateDto productUpdateDto);
+        Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Product>> GetByCategoryAsync(string category);
 
         Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price);
