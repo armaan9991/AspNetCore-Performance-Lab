@@ -1,6 +1,7 @@
 ﻿using Api.Controllers.Repositories.Interfaces;
 using Shared.DTOs;
 using Shared.Models;
+using Api.Controllers.Exceptions;
 
 namespace Api.Controllers.Services
 {
@@ -30,7 +31,8 @@ namespace Api.Controllers.Services
             var item = await _repository.SearchByNameAsync(product.Name);
             if (item != null)
             {
-                throw new Exception("Already present!!");
+                //throw new Exception("Already present!!");
+                throw new ProductAlreadyExistsException($"Product with name {product.Name} already exists.");
             }
             var productEntity = new Product
             {

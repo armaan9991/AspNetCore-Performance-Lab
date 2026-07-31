@@ -1,6 +1,7 @@
 ﻿namespace Api.Controllers.Exceptions
 {
-    public class ProductAlreadyExistsException
+    public class ProductAlreadyExistsException : Exception
     {
+        public ProductAlreadyExistsException(string message):base(message) { }
     }
 }
