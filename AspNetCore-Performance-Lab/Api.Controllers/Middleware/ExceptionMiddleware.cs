@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using Api.Controllers.Responses;
+using Api.Controllers.Exceptions;
 
 namespace Api.Controllers.Middleware
 {
@@ -21,6 +22,19 @@ namespace Api.Controllers.Middleware
             try
             {
                 await _next(context);
+            }
+            catch(ProductAlreadyExistsException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+
+                await context.Response.WriteAsJsonAsync(
+                    new ApiResponse<string>
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Data = null
+                    });
             }
             catch (Exception ex)
             {
