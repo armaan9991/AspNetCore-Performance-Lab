@@ -36,6 +36,30 @@ namespace Api.Controllers.Middleware
                         Data = null
                     });
             }
+            catch (ProductNotFoundException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                await context.Response.WriteAsJsonAsync(
+                    new ApiResponse<string>
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Data = null
+                    });
+            }
+            catch (InvalidPriceException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(
+                    new ApiResponse<string>
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Data = null
+                    });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);

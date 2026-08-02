@@ -1,6 +1,7 @@
 ﻿namespace Api.Controllers.Exceptions
 {
-    public class InvalidPriceException
+    public class InvalidPriceException: Exception
     {
+        public InvalidPriceException(string message) : base(message) { }
     }
 }
