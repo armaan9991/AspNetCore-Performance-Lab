@@ -2,9 +2,10 @@
 {
     public class AppSettings
     {
-        public int PageSize { get; set; } = 20;
-        public  string CompanyName { get; set; }= string.Empty;
-        public bool EnableCaching { get; set; };
+        public int PageSize { get; set; }
 
-	}
+        public string CompanyName { get; set; } = string.Empty;
+
+        public bool EnableCaching { get; set; }
+    }
 }
