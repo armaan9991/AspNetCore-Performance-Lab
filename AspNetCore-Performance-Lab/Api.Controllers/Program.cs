@@ -1,10 +1,11 @@
 using Api.Controllers.Data;
-using Api.Controllers.Repositories.Implementations;
 using Api.Controllers.Repositories.Interfaces;
 using Api.Controllers.Services;
 using Microsoft.EntityFrameworkCore;
 using Api.Controllers.Middleware;
 using Api.Controllers.Extensions;
+using Api.Controllers.Settings;
+
 //using Api.Controllers
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddApplicationService();
 
-builder.Services.Configure<AppSettings >(
+builder.Services.Configure<AppSettings>(
     builder.Configuration.GetSection("AppSettings"));
+
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
