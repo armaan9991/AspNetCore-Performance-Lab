@@ -26,7 +26,7 @@ namespace Api.Controllers.Services
         {
             if (product.Price<0)
             {
-                throw new Exception("no negative price");
+                throw new InvalidPriceException("no negative price");
             }
             var item = await _repository.SearchByNameAsync(product.Name);
             if (item != null)
