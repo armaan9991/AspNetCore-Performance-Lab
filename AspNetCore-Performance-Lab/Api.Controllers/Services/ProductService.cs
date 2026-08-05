@@ -2,15 +2,19 @@
 using Shared.DTOs;
 using Shared.Models;
 using Api.Controllers.Exceptions;
+using Microsoft.Extensions.Options;
+using Api.Controllers.Settings;
 
 namespace Api.Controllers.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _repository;
-        public ProductService(IProductRepository repository)
+        private readonly AppSettings _settings;
+        public ProductService(IProductRepository repository,IOptions<AppSettings> options)
         {
             _repository = repository;
+            _settings = options.Value;
         }
         public async Task<IEnumerable<ProductReadDto>> GetAllProductsAsync()
         {

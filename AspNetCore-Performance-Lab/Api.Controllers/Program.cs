@@ -1,6 +1,4 @@
 using Api.Controllers.Data;
-using Api.Controllers.Repositories.Interfaces;
-using Api.Controllers.Services;
 using Microsoft.EntityFrameworkCore;
 using Api.Controllers.Middleware;
 using Api.Controllers.Extensions;
@@ -10,7 +8,7 @@ using Api.Controllers.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<IProductService, ProductService>();
@@ -24,7 +22,9 @@ builder.Services.Configure<AppSettings>(
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        )
+    );
 
 var app = builder.Build();
 
@@ -39,7 +39,5 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-
 
 app.Run();

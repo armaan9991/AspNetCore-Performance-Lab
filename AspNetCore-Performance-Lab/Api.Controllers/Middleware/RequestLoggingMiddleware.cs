@@ -12,12 +12,16 @@
         }
         public async Task InvokeAsync(HttpContext context)
         {
+            Console.WriteLine("Request Started");
+
             _logger.LogInformation(
                 "Incoming Request : {Method} {Path}",
                 context.Request.Method,
                 context.Request.Path);
 
             await _next(context);
+           
+            Console.WriteLine("Request Finished");
 
             _logger.LogInformation(
                 "Response Status: {StatusCode}",
