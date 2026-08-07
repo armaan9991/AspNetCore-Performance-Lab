@@ -43,15 +43,15 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> GetProduct(int id)
     {
         var prod = await _service.GetProductByIdAsync(id);
-        if(prod == null)   // 404 not found status code
-        {
-            return NotFound(new ApiResponse<ProductReadDto>
-            {
-                Success =false,
-                Message = $"Product with id {id} not found",
-                Data = null
-            });
-        }
+        //if(prod == null)   // 404 not found status code
+        //{
+        //    return NotFound(new ApiResponse<ProductReadDto>
+        //    {
+        //        Success =false,
+        //        Message = $"Product with id {id} not found",
+        //        Data = null
+        //    });
+        //}
         return Ok(new ApiResponse<ProductReadDto>
         {
             Success = true,
@@ -74,19 +74,20 @@ public class ProductController : ControllerBase
             new { id = created.Id },
             Response);    
     }
-    [HttpPost("{id}")]
+
+    [HttpPost("{id}")] // Middleware returns 409 if exception occurs
     public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
     {
         var updated = await _service.UpdateProductAsync(id, prod);
-        if (updated == null)
-        {
-            return NotFound(new ApiResponse<ProductReadDto>
-            {
-                Success = false,
-                Message = $"Product with id {id} not found",
-                Data = null
-            });
-        }
+        //if (updated == null)
+        //{
+        //    return NotFound(new ApiResponse<ProductReadDto>
+        //    {
+        //        Success = false,
+        //        Message = $"Product with id {id} not found",
+        //        Data = null
+        //    });
+        //}
         return Ok(new ApiResponse<ProductReadDto>
         {
             Success = true,
@@ -94,19 +95,20 @@ public class ProductController : ControllerBase
             Data = updated
         });
     }
-    [HttpPost("delete/{id}")]
+
+    [HttpPost("delete/{id}")] // Middleware returns 404 if exception occurs
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var deleted = await _service.DeleteProductAsync(id);
-        if (!deleted)
-        {
-            return NotFound(new ApiResponse<ProductReadDto>
-            {
-                Success = false,
-                Message = $"Product with id {id} not found",
-                Data = null
-            });
-        }
+        //if (!deleted)
+        //{
+        //    return NotFound(new ApiResponse<ProductReadDto>
+        //    {
+        //        Success = false,
+        //        Message = $"Product with id {id} not found",
+        //        Data = null
+        //    });
+        //}
         return Ok(new ApiResponse<ProductReadDto>
         {
             Success = true,
@@ -114,19 +116,24 @@ public class ProductController : ControllerBase
             Data = deleted ? new ProductReadDto { Id = id } : null
         });
     }
-    [HttpGet("category")]
+
+    /* Need to update this and fix 
+        need to return Enumnerable<ProductReadDto> instead of ProductReadDto
+     */
+
+    [HttpGet("category")] // Middleware returns 404 if exception occurs
     public async Task<IActionResult> GetByCategory(string category)
     {
         var created = await _service.GetByCategoryAsync(category);
-        if (created == null)
-        {
-            return NotFound(new ApiResponse<ProductReadDto>
-            {
-                Success = false,
-                Message = $"Product with {category} not found",
-                Data = null
-            });
-        }
+        //if (created == null)
+        //{
+        //    return NotFound(new ApiResponse<ProductReadDto>
+        //    {
+        //        Success = false,
+        //        Message = $"Product with {category} not found",
+        //        Data = null
+        //    });
+        //}
         return Ok(new ApiResponse<ProductReadDto>
         {
             Success = true,
@@ -135,19 +142,22 @@ public class ProductController : ControllerBase
         });
     }
 
-    [HttpGet("price")]
+    // NEED TO UPDATE
+    //need to return Enumnerable<ProductReadDto> instead of ProductReadDto
+
+    [HttpGet("price")] // Middleware returns 404 if exception occurs
     public async Task<IActionResult> GetExpensiveProduct(decimal price)
     {
             var created = await _service.GetExpensiveProductsAsync(price);
-            if(created == null)
-            {
-                return NotFound(new ApiResponse<ProductReadDto>
-                {
-                    Success = false,
-                    Message = $"Product expensive than {price} not found",
-                    Data = null
-                });
-            }
+            //if(created == null)
+            //{
+            //    return NotFound(new ApiResponse<ProductReadDto>
+            //    {
+            //        Success = false,
+            //        Message = $"Product expensive than {price} not found",
+            //        Data = null
+            //    });
+            //}
             return Ok(new ApiResponse<ProductReadDto>
             {
                 Success = true,
@@ -156,11 +166,13 @@ public class ProductController : ControllerBase
             });
     }
 
-    [HttpGet("name")]
+    // NEED TO UPDATE
+    // it depends if one or many items returned.
+    [HttpGet("name")] // Middleware returns 404 if exception occurs
     public async Task<IActionResult> SearchByName(string name)
     {
         var created = await _service.SearchByNameAsync(name);
-        if (created == null)
+       /* if (created == null)
         {
             return NotFound(new ApiResponse<ProductReadDto>
             {
@@ -168,7 +180,7 @@ public class ProductController : ControllerBase
                 Message = $"Product named {name} not found",
                 Data = null
             });
-        }
+        }*/
         return Ok(new ApiResponse<ProductReadDto>
         {
             Success = true,
