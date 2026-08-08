@@ -75,7 +75,7 @@ public class ProductController : ControllerBase
             Response);    
     }
 
-    [HttpPost("{id}")] // Middleware returns 409 if exception occurs
+    [HttpPut("{id}")] // Middleware returns 409 if exception occurs
     public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
     {
         var updated = await _service.UpdateProductAsync(id, prod);
@@ -96,7 +96,7 @@ public class ProductController : ControllerBase
         });
     }
 
-    [HttpPost("delete/{id}")] // Middleware returns 404 if exception occurs
+    [HttpPut("delete/{id}")] // Middleware returns 404 if exception occurs
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var deleted = await _service.DeleteProductAsync(id);
