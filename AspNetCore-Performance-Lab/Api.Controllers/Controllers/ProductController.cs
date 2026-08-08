@@ -134,11 +134,11 @@ public class ProductController : ControllerBase
         //        Data = null
         //    });
         //}
-        return Ok(new ApiResponse<ProductReadDto>
+        return Ok(new ApiResponse<IEnumerable<ProductReadDto>>
         {
             Success = true,
             Message = $"Product with {category} found  successfully",
-            Data = (ProductReadDto)created
+            Data = created
         });
     }
 
@@ -158,11 +158,11 @@ public class ProductController : ControllerBase
             //        Data = null
             //    });
             //}
-            return Ok(new ApiResponse<ProductReadDto>
+            return Ok(new ApiResponse<IEnumerable<ProductReadDto>>
             {
                 Success = true,
                 Message = $"Product expensive than {price} found",
-                Data = created != null ? new ProductReadDto { Price = price } : null
+                Data = created
             });
     }
 
