@@ -9,5 +9,15 @@ namespace Api.Controllers.Data
 
         }
         public DbSet<Product> Products { get; set; }   // products table
+        public DbSet<User> Users { get; set; }   // users table 
+
+        // Make Each users email Unique
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().
+                HasIndex(u => u.Email).IsUnique();
+        }
     }
 }
