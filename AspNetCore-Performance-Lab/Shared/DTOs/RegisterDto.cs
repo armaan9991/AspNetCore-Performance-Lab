@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// This for registering new user, has only attributes that user will give.
 namespace Shared.DTOs
 {
     public class RegisterDto
