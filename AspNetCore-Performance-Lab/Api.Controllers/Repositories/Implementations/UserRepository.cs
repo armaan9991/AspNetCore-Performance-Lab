@@ -1,5 +1,6 @@
 ﻿using Api.Controllers.Data;
 using Microsoft.EntityFrameworkCore;
+using Shared.DTOs;
 using Shared.Models;
 
 namespace Api.Controllers.Repositories.Implementations
@@ -11,6 +12,7 @@ namespace Api.Controllers.Repositories.Implementations
         {
             _context = context;
         }
+       
         public async Task<User?>  GetByIdAsync (int id) {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }

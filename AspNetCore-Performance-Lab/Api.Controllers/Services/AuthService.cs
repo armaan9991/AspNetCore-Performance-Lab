@@ -15,9 +15,29 @@ namespace Api.Controllers.Services
             _passwordHasher = passwordHasher;
         }
 
-        public Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
+        public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
         {
-            throw new NotImplementedException();
+            var emailExists = await _userRespository.EmailExistsAsync(registerDto.Email);
+            if (emailExists)
+            {
+                throw new Exception("Email is alreadty Exists");
+            }
+            var user = new User
+            {
+                Email = registerDto.Email,
+                Role = "User",
+                CreatedAt = DateTime.Now
+            };
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, registerDto.Password);
+
+            await _userRespository.AddAsync(user);
+            return new AuthResponseDto
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                Role = user.Role
+            };
         }
         public Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
         {
