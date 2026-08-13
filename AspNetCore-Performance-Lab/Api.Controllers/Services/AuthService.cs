@@ -39,9 +39,26 @@ namespace Api.Controllers.Services
                 Role = user.Role
             };
         }
-        public Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
+        public async Task<AuthResponseDto?> LoginAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var user = await _userRespository.GetByEmailAsync(loginDto.Email);
+            if (user == null) { 
+                    return null;
+            }
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+            
+            if(result == PasswordVerificationResult.Failed)
+            {
+                return null;
+            }
+            return new AuthResponseDto
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                Role = user.Role
+            };
+
+            //throw new NotImplementedException();
         }
     }
 }
