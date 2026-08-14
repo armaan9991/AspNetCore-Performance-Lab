@@ -10,6 +10,8 @@ namespace Api.Controllers.Extensions
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserRespository, UserRepository>();
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
     }

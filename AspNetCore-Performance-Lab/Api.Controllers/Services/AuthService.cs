@@ -45,6 +45,7 @@ namespace Api.Controllers.Services
             if (user == null) { 
                     return null;
             }
+            // gives failed or success
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
             
             if(result == PasswordVerificationResult.Failed)

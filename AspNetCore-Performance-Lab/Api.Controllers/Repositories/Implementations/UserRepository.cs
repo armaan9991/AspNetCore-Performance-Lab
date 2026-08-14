@@ -1,11 +1,12 @@
 ﻿using Api.Controllers.Data;
+using Api.Controllers.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Shared.DTOs;
 using Shared.Models;
 
 namespace Api.Controllers.Repositories.Implementations
 {
-    public class UserRepository
+    public class UserRepository : IUserRespository
     {
         private readonly AppDbContext _context;
         public UserRepository(AppDbContext context)
@@ -27,7 +28,7 @@ namespace Api.Controllers.Repositories.Implementations
             await _context.SaveChangesAsync();
             return user;
         }
-        public async Task<bool?> EmailExistsAsync(string email)
+        public async Task<bool> EmailExistsAsync(string email)
         {
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
