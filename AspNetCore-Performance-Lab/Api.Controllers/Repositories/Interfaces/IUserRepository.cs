@@ -2,7 +2,7 @@
 
 namespace Api.Controllers.Repositories.Interfaces
 {
-    public interface IUserRespository
+    public interface IUserRepository
     {
         Task<User?> GetByIdAsync(int id);
         Task<User?> GetByEmailAsync(string email);

@@ -6,7 +6,7 @@ using Shared.Models;
 
 namespace Api.Controllers.Repositories.Implementations
 {
-    public class UserRepository : IUserRespository
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
         public UserRepository(AppDbContext context)
