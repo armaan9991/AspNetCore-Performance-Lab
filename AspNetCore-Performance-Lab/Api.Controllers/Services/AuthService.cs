@@ -7,9 +7,9 @@ namespace Api.Controllers.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserRespository _userRespository;
+        private readonly IUserRepository _userRespository;
         private readonly PasswordHasher<User> _passwordHasher;
-        public AuthService(IUserRespository userRespository, PasswordHasher<User> passwordHasher)
+        public AuthService(IUserRepository userRespository, PasswordHasher<User> passwordHasher)
         {
             _userRespository = userRespository;
             _passwordHasher = passwordHasher;
@@ -26,7 +26,7 @@ namespace Api.Controllers.Services
             {
                 Email = registerDto.Email,
                 Role = "User",
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, registerDto.Password);
