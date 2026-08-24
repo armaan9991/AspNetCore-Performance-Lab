@@ -4,6 +4,9 @@ using Api.Controllers.Middleware;
 using Api.Controllers.Extensions;
 using Api.Controllers.Settings;
 using Api.Controllers.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 //using Api.Controllers
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +31,26 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     );
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtsettings = builder.Configuration
+        .GetSection("JwtSettings")
+        .Get<JwtSettings>();
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtsettings.Issuer,
+            ValidAudience = jwtsettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtsettings.Key))
+        };
+    });
 
 var app = builder.Build();
 
