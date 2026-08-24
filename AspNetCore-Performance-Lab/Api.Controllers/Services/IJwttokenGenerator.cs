@@ -1,7 +1,9 @@
-﻿namespace Api.Controllers.Services
+﻿using Shared.Models;
+
+namespace Api.Controllers.Services
 {
     public interface IJwttokenGenerator
     {
-        string GenerateToken();
+        string GenerateToken(User user);
     }
 }
