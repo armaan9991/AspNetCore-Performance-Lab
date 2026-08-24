@@ -15,6 +15,7 @@ namespace Api.Controllers.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwttokenGenerator, JwtTokenGenerator>();
             return services;
         }
     }

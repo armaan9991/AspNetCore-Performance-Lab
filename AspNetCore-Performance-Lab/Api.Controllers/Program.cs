@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Api.Controllers.Middleware;
 using Api.Controllers.Extensions;
 using Api.Controllers.Settings;
+using Api.Controllers.Configurations;
 
 //using Api.Controllers
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
         )
     );
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
 var app = builder.Build();
 
