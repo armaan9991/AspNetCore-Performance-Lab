@@ -9,10 +9,12 @@ namespace Api.Controllers.Services
     {
         private readonly IUserRepository _userRespository;
         private readonly PasswordHasher<User> _passwordHasher;
-        public AuthService(IUserRepository userRespository, PasswordHasher<User> passwordHasher)
+        private readonly IJwttokenGenerator _jwtTokenGenerator;
+        public AuthService(IUserRepository userRespository, PasswordHasher<User> passwordHasher, IJwttokenGenerator jwttokenGenerator)
         {
             _userRespository = userRespository;
             _passwordHasher = passwordHasher;
+            _jwtTokenGenerator = jwttokenGenerator;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
@@ -52,11 +54,15 @@ namespace Api.Controllers.Services
             {
                 return null;
             }
+
+            var token = _jwtTokenGenerator.GenerateToken(user);
+
             return new AuthResponseDto
             {
                 UserId = user.Id,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                Token = token
             };
 
             //throw new NotImplementedException();
