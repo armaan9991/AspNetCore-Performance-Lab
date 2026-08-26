@@ -26,7 +26,7 @@ namespace Api.Controllers.Services
             };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_jwtSettings.Key));
+                Encoding.UTF8.GetBytes(_jwtSettings.Key)); 
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

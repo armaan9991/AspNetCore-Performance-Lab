@@ -6,6 +6,7 @@ using Shared.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace Api.Controllers.Controllers;
 
+using Microsoft.AspNetCore.Authorization;
 /* 
  * tells that this class is controller
  * automatically model validation , better error respose,  API specific behaviors.
@@ -18,6 +19,7 @@ namespace Api.Controllers.Controllers;
 [ApiController]
 [Route("api/[controller]")]    // here controller is replaced with controller name which is ProductController so the route will be api/product
 
+[Authorize] // now each  endpoint requires authencation
 public class ProductController : ControllerBase
 {
     private readonly IProductService _service;
