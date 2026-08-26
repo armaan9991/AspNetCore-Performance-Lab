@@ -74,5 +74,47 @@ namespace Api.Controllers.Repositories.Implementations
                 FirstOrDefaultAsync(p => p.Name == name);
             return result;
         }
+
+        public async Task<PagedResponseDto<Product>> GetPagedAsync(ProductQueryDto query)
+        {
+            // BUILd a IQuerable query.
+
+            var products = _context.Products.AsNoTracking().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Category))
+            {
+                products = products.Where(p => p.Category == query.Category);
+            }
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                products = products.Where(p => p.Name.Contains(query.Search));
+            }
+            if(query.SortBy?.ToLower() == "price")
+            {
+                products = query.SortDescending ? products.OrderByDescending(p => p.Name)
+            : products.OrderBy(p => p.Name);
+            }
+            else
+            {
+                products = products.OrderBy(p => p.Id);
+            }
+             var totalItems = await products.CountAsync();
+
+            var items = await products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToListAsync();
+            
+            var totalPages = (int)Math.Ceiling(totalItems / (double)query.PageSize);
+
+            return new PagedResponseDto<Product>
+            {
+                Items = items,
+                Page = query.Page,
+                PageSize = query.PageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                HasNextPage = query.Page < totalPages,
+                HasPreviousPage = query.Page > 1,
+            };
+        }
+
     }
 }

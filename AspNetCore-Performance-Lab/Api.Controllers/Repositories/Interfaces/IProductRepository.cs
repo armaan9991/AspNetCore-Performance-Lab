@@ -15,5 +15,6 @@ namespace Api.Controllers.Repositories.Interfaces
         Task<IEnumerable<Product>> GetExpensiveProductsAsync(decimal price);
 
         Task<Product?> SearchByNameAsync(string name);
+        Task<PagedResponseDto<Product>> GetPagedAsync(ProductQueryDto query);
     }
 }
