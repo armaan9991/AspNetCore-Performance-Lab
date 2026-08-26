@@ -193,4 +193,10 @@ public class ProductController : ControllerBase
             Data = created
         });
     }
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPagedProducts(ProductQueryDto query)
+    {
+        var results = await _service.GetPagedProductsAsync(query);
+        return Ok(results);
+    }
 }
