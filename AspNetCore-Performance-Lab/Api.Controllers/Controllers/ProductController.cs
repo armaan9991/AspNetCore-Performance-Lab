@@ -63,6 +63,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateProduct(ProductCreateDto prod)
     {
         var created = await _service.AddProductAsync(prod);
@@ -78,6 +79,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}")] // Middleware returns 409 if exception occurs
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
     {
         var updated = await _service.UpdateProductAsync(id, prod);
@@ -99,6 +101,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("delete/{id}")] // Middleware returns 404 if exception occurs
+    [Authorize (Roles = "Admin")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var deleted = await _service.DeleteProductAsync(id);
