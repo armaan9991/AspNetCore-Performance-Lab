@@ -78,7 +78,7 @@ public class ProductController : ControllerBase
             Response);    
     }
 
-    [HttpPut("{id}")] // Middleware returns 409 if exception occurs
+    [HttpPut("{id:int}")] // Middleware returns 409 if exception occurs
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto prod)
     {
@@ -194,7 +194,7 @@ public class ProductController : ControllerBase
         });
     }
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedProducts(ProductQueryDto query)
+    public async Task<IActionResult> GetPagedProducts([FromQuery]ProductQueryDto query)
     {
         var results = await _service.GetPagedProductsAsync(query);
         return Ok(results);
