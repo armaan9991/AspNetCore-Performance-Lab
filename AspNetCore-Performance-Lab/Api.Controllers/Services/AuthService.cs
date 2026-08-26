@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Shared.DTOs;
 using Shared.Models;
+using Api.Controllers.Exceptions;
 
 namespace Api.Controllers.Services
 {
@@ -22,7 +23,8 @@ namespace Api.Controllers.Services
             var emailExists = await _userRespository.EmailExistsAsync(registerDto.Email);
             if (emailExists)
             {
-                throw new Exception("Email is alreadty Exists");
+                throw new UserAlreadyExistsException("User with this email is already present.")
+                //throw new Exception("Email is alreadty Exists");
             }
             var user = new User
             {
