@@ -81,6 +81,37 @@ namespace Api.Controllers.Services
             var results= await _repository.SearchByNameAsync(name);
             return results != null ? MapToReadDto(results) : null;
         }
+        public async Task<PagedResponseDto<ProductReadDto>> GetPagedProductsAsync(ProductQueryDto query)
+        {
+            // validate pagination query .
+            if (query.Page < 1)
+            {
+                query.Page = 1;
+            }
+
+            if (query.PageSize < 1)
+            {
+                query.PageSize = 10;
+            }
+
+            if (query.PageSize > 100)
+            {
+                query.PageSize = 100;
+            }
+
+            var results = await _repository.GetPagedAsync(query);
+            return new PagedResponseDto<ProductReadDto>
+            {
+                Items = results.Items.Select(MapToReadDto),
+                Page = results.Page,
+                PageSize = results.PageSize,
+                TotalItems = results.TotalItems,
+                TotalPages = results.TotalPages,
+                HasNextPage = results.HasNextPage,
+                HasPreviousPage = results.HasPreviousPage
+            };
+
+        }
         public static  ProductReadDto MapToReadDto(Product product)
         {
             return new ProductReadDto
@@ -91,5 +122,6 @@ namespace Api.Controllers.Services
                 Category = product.Category,
             };
         }
+        
     }
 }

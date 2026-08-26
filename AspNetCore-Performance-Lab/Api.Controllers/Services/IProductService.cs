@@ -14,4 +14,5 @@ public interface IProductService
     Task<IEnumerable<ProductReadDto>> GetByCategoryAsync(string category);
     Task<IEnumerable<ProductReadDto>> GetExpensiveProductsAsync(decimal price);
     Task<ProductReadDto?> SearchByNameAsync(string name);
+    Task<PagedResponseDto<ProductReadDto>> GetPagedProductsAsync(ProductQueryDto query);
 } 
