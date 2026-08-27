@@ -80,6 +80,7 @@ namespace Api.Controllers.Repositories.Implementations
             // BUILd a IQuerable query.
 
             var products = _context.Products.AsNoTracking().AsQueryable();
+            
 
             if (!string.IsNullOrWhiteSpace(query.Category))
             {
@@ -98,10 +99,14 @@ namespace Api.Controllers.Repositories.Implementations
             {
                 products = products.OrderBy(p => p.Id);
             }
-             var totalItems = await products.CountAsync();
+            var totalItems = await products.CountAsync();
 
             var items = await products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToListAsync();
-            
+
+            var pagedQ = products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToQueryString();
+            Console.WriteLine(pagedQ);
+
+
             var totalPages = (int)Math.Ceiling(totalItems / (double)query.PageSize);
 
             return new PagedResponseDto<Product>
