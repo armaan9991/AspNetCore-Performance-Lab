@@ -23,7 +23,7 @@ namespace Api.Controllers.Services
             var emailExists = await _userRespository.EmailExistsAsync(registerDto.Email);
             if (emailExists)
             {
-                throw new UserAlreadyExistsException("User with this email is already present.")
+                throw new UserAlreadyExistsException("User with this email is already present.");
                 //throw new Exception("Email is alreadty Exists");
             }
             var user = new User

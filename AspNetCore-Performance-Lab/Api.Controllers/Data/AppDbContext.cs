@@ -21,6 +21,9 @@ namespace Api.Controllers.Data
             // so now two users cannot have same email address in the database.
             modelBuilder.Entity<User>().
                 HasIndex(u => u.Email).IsUnique();
+
+            modelBuilder.Entity<Product>().
+                HasIndex(p => p.Name);
         }
     }
 }
