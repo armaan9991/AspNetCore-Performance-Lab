@@ -20,10 +20,10 @@ public class ApiBenchmark
 
     private HttpClient _httpClient = null!; // null as intialization but would be assigned before use.
 
-    [Params(1,10,50)]
+    [Params(50)]
     public int Page { get; set; }
 
-    [Params(10,50,100)]
+    [Params(50)]
     public int PageSize { get; set; }
     private class LoginModel
     {
@@ -57,7 +57,7 @@ public class ApiBenchmark
         if (!response.IsSuccessStatusCode)
         {
             var errorBody = await response.Content.ReadAsStringAsync();
-            throw new Exception($"🚨 LOGIN FAILED WITH STATUS {(int)response.StatusCode} ({response.StatusCode}). Server said: {errorBody}");
+            throw new Exception($" LOGIN FAILED WITH STATUS {(int)response.StatusCode} ({response.StatusCode}). Server said: {errorBody}");
             //throw new Exception($"Authentication failed! Status: {response.StatusCode}. Ensure your test user exists in the DB.");
         }
 

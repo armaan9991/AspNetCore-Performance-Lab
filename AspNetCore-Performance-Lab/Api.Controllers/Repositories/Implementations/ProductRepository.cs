@@ -79,7 +79,7 @@ namespace Api.Controllers.Repositories.Implementations
         {
             // BUILd a IQuerable query.
 
-            var products = _context.Products.AsNoTracking().AsQueryable();
+            var products = _context.Products.AsQueryable();
             
 
             if (!string.IsNullOrWhiteSpace(query.Category))
