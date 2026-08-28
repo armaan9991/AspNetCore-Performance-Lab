@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 
-namespace BenchmarkRunner.Data
+namespace MyBenchmarks.Data
 {
     public class BenchmarkDbContext:DbContext
     {

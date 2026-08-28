@@ -1,13 +1,30 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using System.Net.Http.Json;
 using System.Net.Http.Json;
 
 namespace MyBenchmarks;
 
+[MemoryDiagnoser]
+[Config(typeof(InProcessConfig))]
 public class ApiBenchmark
 {
+    private class InProcessConfig : BenchmarkDotNet.Configs.ManualConfig
+    {
+        public InProcessConfig()
+        {
+            AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance));
+        }
+    }
+
     private HttpClient _httpClient = null!; // null as intialization but would be assigned before use.
 
+    [Params(1,10,50)]
+    public int Page { get; set; }
+
+    [Params(10,50,100)]
+    public int PageSize { get; set; }
     private class LoginModel
     {
         public string Email { get; set; } = "a@g.com"; 
@@ -21,7 +38,7 @@ public class ApiBenchmark
     }
 
     [GlobalSetup]  // this tells donet to run exactly once before  any performance begins. handles logic outside of timer.
-    public async void setup()
+    public async Task setup()
     {
 
         var handler = new HttpClientHandler
@@ -39,7 +56,9 @@ public class ApiBenchmark
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Authentication failed! Status: {response.StatusCode}. Ensure your test user exists in the DB.");
+            var errorBody = await response.Content.ReadAsStringAsync();
+            throw new Exception($"🚨 LOGIN FAILED WITH STATUS {(int)response.StatusCode} ({response.StatusCode}). Server said: {errorBody}");
+            //throw new Exception($"Authentication failed! Status: {response.StatusCode}. Ensure your test user exists in the DB.");
         }
 
         var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
@@ -57,7 +76,7 @@ public class ApiBenchmark
     [Benchmark]   // means this method will  test performance.
     public async Task GetProducts()
     {
-        var response = await _httpClient.GetAsync("/api/Product/paged?page=1&pageSize=10"); // hit actually api.
+        var response = await _httpClient.GetAsync($"/api/Product/paged?page={Page}&pageSize={PageSize}"); // hit actually api.
         response.EnsureSuccessStatusCode();         // if there is any exception then this throw exception to stop the false beanchmark / measurements.
     }
 
