@@ -67,9 +67,6 @@ public class ApiBenchmark
         _httpClient.Dispose();
     }
 
-    [Benchmark]        //  means it tells that this method is to test and measure.
-    public void Test()
-    {
-        
-    }
+    //[Benchmark]        //  means it tells that this method is to test and measure.
+    
 }
