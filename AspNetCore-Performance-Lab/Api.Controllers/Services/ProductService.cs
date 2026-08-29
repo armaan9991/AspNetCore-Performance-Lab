@@ -102,7 +102,7 @@ namespace Api.Controllers.Services
             var results = await _repository.GetPagedAsync(query);
             return new PagedResponseDto<ProductReadDto>
             {
-                Items = results.Items.Select(MapToReadDto),
+                Items = results.Items,
                 Page = results.Page,
                 PageSize = results.PageSize,
                 TotalItems = results.TotalItems,

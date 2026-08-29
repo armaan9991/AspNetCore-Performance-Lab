@@ -1,6 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Toolchains.InProcess.Emit;
+using Shared.DTOs;
+using Shared.Models;
 using System.Net.Http.Json;
 using System.Net.Http.Json;
 
@@ -73,13 +75,20 @@ public class ApiBenchmark
     
 
 
-    [Benchmark]   // means this method will  test performance.
-    public async Task GetProducts()
-    {
-        var response = await _httpClient.GetAsync($"/api/Product/paged?page={Page}&pageSize={PageSize}"); // hit actually api.
-        response.EnsureSuccessStatusCode();         // if there is any exception then this throw exception to stop the false beanchmark / measurements.
-    }
+    //[Benchmark]   // means this method will  test performance.
+    //public async Task GetProducts()
+    //{
+    //    var response = await _httpClient.GetAsync($"/api/Product/paged?page={Page}&pageSize={PageSize}"); // hit actually api.
+    //    response.EnsureSuccessStatusCode();         // if there is any exception then this throw exception to stop the false beanchmark / measurements.
+    //}
 
+    [Benchmark]
+    public async Task SearchProduct()
+    {
+        
+        var res = await _httpClient.GetAsync($"/api/Product/name?name=Product%205000");
+        res.EnsureSuccessStatusCode();
+    }
     [GlobalCleanup]   // execute this method once all benchmarks are finished. closes all network socket.
     public void Cleanup()
     {

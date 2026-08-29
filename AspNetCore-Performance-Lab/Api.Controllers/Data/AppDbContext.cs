@@ -19,11 +19,12 @@ namespace Api.Controllers.Data
             base.OnModelCreating(modelBuilder);
             // we have to configure User entity and then we check create index for DB as email for al users and then make it unique .
             // so now two users cannot have same email address in the database.
-            modelBuilder.Entity<User>().
-                HasIndex(u => u.Email).IsUnique();
+            //modelBuilder.Entity<User>().
+            //    HasIndex(u => u.Email).IsUnique();
 
             modelBuilder.Entity<Product>().
-                HasIndex(p => p.Name);
+                HasIndex(p => p.Name)
+                .HasDatabaseName("IX_Pname");
         }
     }
 }

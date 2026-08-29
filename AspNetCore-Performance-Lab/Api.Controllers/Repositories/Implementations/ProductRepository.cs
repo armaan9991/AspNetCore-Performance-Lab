@@ -75,7 +75,7 @@ namespace Api.Controllers.Repositories.Implementations
             return result;
         }
 
-        public async Task<PagedResponseDto<Product>> GetPagedAsync(ProductQueryDto query)
+        public async Task<PagedResponseDto<ProductReadDto>> GetPagedAsync(ProductQueryDto query)
         {
             // BUILd a IQuerable query.
 
@@ -101,15 +101,21 @@ namespace Api.Controllers.Repositories.Implementations
             }
             var totalItems = await products.CountAsync();
 
-            var items = await products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToListAsync();
-
+            var items = await products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).Select(p => new ProductReadDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Category = p.Category
+            }).ToListAsync();
+            //var sel_items = items.;
             var pagedQ = products.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToQueryString();
             Console.WriteLine(pagedQ);
 
 
             var totalPages = (int)Math.Ceiling(totalItems / (double)query.PageSize);
 
-            return new PagedResponseDto<Product>
+            return new PagedResponseDto<ProductReadDto>
             {
                 Items = items,
                 Page = query.Page,
